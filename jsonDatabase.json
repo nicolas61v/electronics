@@ -1,0 +1,19 @@
+{
+    "sensores": {
+      "lecturas": {
+        "inicial": {
+          "lm35_temperatura": 0,
+          "dht11_temperatura": 0,
+          "dht11_humedad": 0,
+          "timestamp": 0
+        }
+      }
+    },
+    "dispositivos": {
+      "esp32_1": {
+        "estado": "offline",
+        "ultima_conexion": 0,
+        "rele": false
+      }
+    }
+  }
