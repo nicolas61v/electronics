@@ -1,20 +1,24 @@
 import React from 'react';
-import { View, StyleSheet, SafeAreaView, Text } from 'react-native';
+import { View, StyleSheet, SafeAreaView, Text, ScrollView } from 'react-native';
 import DataIN from './components/DataIN';
 import SetState from './components/SetState';
+import TempControl from './components/TempControl';
 import HouseLogo from './components/HouseLogo';
 
 const App = () => {
   return (
     <SafeAreaView style={styles.safeArea}>
-      <View style={styles.container}>
-        <HouseLogo />
-        <Text style={styles.title}>Control ESP32</Text>
-        <View style={styles.componentsContainer}>
-          <DataIN />
-          <SetState />
+      <ScrollView>
+        <View style={styles.container}>
+          <HouseLogo />
+          <Text style={styles.title}>Control ESP32</Text>
+          <View style={styles.componentsContainer}>
+            <DataIN />
+            <SetState />
+            <TempControl />
+          </View>
         </View>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
