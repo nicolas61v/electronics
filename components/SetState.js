@@ -12,18 +12,22 @@ const SetState = () => {
   const [lastUpdate, setLastUpdate] = useState(null);
 
   useEffect(() => {
-    // Escuchar cambios en el estado del relé
+    console.log("Iniciando escucha del estado del dispositivo...");
+    
+    // Escuchar cambios en el estado del relé y el estado del dispositivo
     const releRef = ref(database, 'dispositivos/esp32_1/rele');
     const estadoRef = ref(database, 'dispositivos/esp32_1/estado');
     const tiempoRef = ref(database, 'dispositivos/esp32_1/ultima_conexion');
 
     const unsubscribeRele = onValue(releRef, (snapshot) => {
+      console.log("Estado del relé:", snapshot.val());
       if (snapshot.exists()) {
         setIsOn(snapshot.val());
       }
     });
 
     const unsubscribeEstado = onValue(estadoRef, (snapshot) => {
+      console.log("Estado del dispositivo:", snapshot.val());
       if (snapshot.exists()) {
         setDeviceStatus(snapshot.val());
       }
@@ -43,13 +47,17 @@ const SetState = () => {
   }, []);
 
   const toggleSwitch = async () => {
-    if (deviceStatus !== 'online') return;
+    if (deviceStatus !== 'online') {
+      console.log("Dispositivo offline, no se puede cambiar el estado");
+      return;
+    }
 
     setIsLoading(true);
     const newState = !isOn;
     const releRef = ref(database, 'dispositivos/esp32_1/rele');
     
     try {
+      console.log("Cambiando estado del relé a:", newState);
       await set(releRef, newState);
       setIsOn(newState);
       Animated.timing(containerColor, {
@@ -58,7 +66,7 @@ const SetState = () => {
         useNativeDriver: false,
       }).start();
     } catch (error) {
-      console.error("Error toggling relay:", error);
+      console.error("Error cambiando estado del relé:", error);
     } finally {
       setIsLoading(false);
     }

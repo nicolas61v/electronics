@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { ref, onValue, get } from 'firebase/database';
+import { ref, onValue } from 'firebase/database';
 import { database } from '../lib/firebase';
 
 const DataIN = () => {
@@ -11,48 +11,50 @@ const DataIN = () => {
   const [lastUpdate, setLastUpdate] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
-  const fetchData = async () => {
-    setIsLoading(true);
-    try {
-      // Obtener la última lectura
-      const lecturasRef = ref(database, 'sensores/lecturas');
-      const snapshot = await get(lecturasRef);
+  useEffect(() => {
+    console.log("Iniciando escucha de datos...");
+    
+    const lecturasRef = ref(database, 'sensores/lecturas/inicial');
+    const unsubscribe = onValue(lecturasRef, (snapshot) => {
+      console.log("Datos recibidos:", snapshot.val());
       
       if (snapshot.exists()) {
-        // Convertir el objeto de lecturas en un array y ordenar por timestamp
-        const lecturas = Object.values(snapshot.val());
-        const ultimaLectura = lecturas[lecturas.length - 1];
+        const lectura = snapshot.val();
         
-        setTemperature1(ultimaLectura.lm35_temperatura.toFixed(1));
-        setTemperature2(ultimaLectura.dht11_temperatura.toFixed(1));
-        setHumidity(ultimaLectura.dht11_humedad.toFixed(1));
-        setLastUpdate(new Date().toLocaleTimeString());
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    // Configurar listener para actualizaciones en tiempo real
-    const lecturasRef = ref(database, 'sensores/lecturas');
-    const unsubscribe = onValue(lecturasRef, (snapshot) => {
-      if (snapshot.exists()) {
-        const lecturas = Object.values(snapshot.val());
-        const ultimaLectura = lecturas[lecturas.length - 1];
-        
-        setTemperature1(ultimaLectura.lm35_temperatura.toFixed(1));
-        setTemperature2(ultimaLectura.dht11_temperatura.toFixed(1));
-        setHumidity(ultimaLectura.dht11_humedad.toFixed(1));
-        setLastUpdate(new Date().toLocaleTimeString());
+        // Verificar que los valores no sean 0 o null
+        if (lectura.lm35_temperatura || lectura.dht11_temperatura || lectura.dht11_humedad) {
+          setTemperature1(lectura.lm35_temperatura.toFixed(1));
+          setTemperature2(lectura.dht11_temperatura.toFixed(1));
+          setHumidity(lectura.dht11_humedad.toFixed(1));
+          setLastUpdate(new Date().toLocaleTimeString());
+        } else {
+          console.log("Valores en 0 o nulos recibidos");
+        }
       }
     });
 
-    // Limpiar listener cuando el componente se desmonte
-    return () => unsubscribe();
+    // Verificar estado del dispositivo
+    const estadoRef = ref(database, 'dispositivos/esp32_1/estado');
+    const unsubscribeEstado = onValue(estadoRef, (snapshot) => {
+      if (snapshot.exists() && snapshot.val() === 'offline') {
+        setTemperature1('--');
+        setTemperature2('--');
+        setHumidity('--');
+      }
+    });
+
+    return () => {
+      unsubscribe();
+      unsubscribeEstado();
+    };
   }, []);
+
+  const fetchData = async () => {
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+  };
 
   return (
     <View style={styles.container}>
@@ -61,21 +63,27 @@ const DataIN = () => {
           <View style={styles.iconContainer}>
             <Ionicons name="thermometer-outline" size={24} color="#1E90FF" />
           </View>
-          <Text style={styles.dataValue}>{temperature1}°C</Text>
+          <Text style={styles.dataValue}>
+            {temperature1 === '0.0' ? '--' : `${temperature1}°C`}
+          </Text>
           <Text style={styles.dataLabel}>LM35</Text>
         </View>
         <View style={styles.dataItem}>
           <View style={styles.iconContainer}>
             <Ionicons name="thermometer-outline" size={24} color="#1E90FF" />
           </View>
-          <Text style={styles.dataValue}>{temperature2}°C</Text>
+          <Text style={styles.dataValue}>
+            {temperature2 === '0.0' ? '--' : `${temperature2}°C`}
+          </Text>
           <Text style={styles.dataLabel}>DHT11 Temp</Text>
         </View>
         <View style={styles.dataItem}>
           <View style={styles.iconContainer}>
             <Ionicons name="water-outline" size={24} color="#1E90FF" />
           </View>
-          <Text style={styles.dataValue}>{humidity}%</Text>
+          <Text style={styles.dataValue}>
+            {humidity === '0.0' ? '--' : `${humidity}%`}
+          </Text>
           <Text style={styles.dataLabel}>Humedad</Text>
         </View>
       </View>
