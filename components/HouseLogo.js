@@ -1,9 +1,9 @@
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, StyleSheet, Animated } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 
 const HouseLogo = () => (
-  <View style={styles.container}>
+  <View style={styles.container} pointerEvents="none">
     <Svg height="100" width="100" viewBox="0 0 24 24">
       <Path
         d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"
@@ -32,7 +32,8 @@ const styles = StyleSheet.create({
     left: '50%',
     transform: [{ translateX: -50 }, { translateY: -50 }],
     opacity: 0.1,
+    zIndex: -1,
   },
 });
 
-export default HouseLogo;
+export default React.memo(HouseLogo);

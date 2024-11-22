@@ -8,10 +8,16 @@ import HouseLogo from './components/HouseLogo';
 const App = () => {
   return (
     <SafeAreaView style={styles.safeArea}>
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.container}>
           <HouseLogo />
-          <Text style={styles.title}>Control ESP32</Text>
+          
+          <View style={styles.headerContainer}>
+            <Text style={styles.titleMain}>CONTROL</Text>
+            <Text style={styles.titleSub}>ESP32</Text>
+            <View style={styles.underline} />
+          </View>
+
           <View style={styles.componentsContainer}>
             <DataIN />
             <SetState />
@@ -26,7 +32,7 @@ const App = () => {
 const styles = StyleSheet.create({
   safeArea: {
     flex: 1,
-    backgroundColor: '#F0F8FF', // Azul mediterráneo muy claro
+    backgroundColor: '#F0F8FF',
   },
   container: {
     flex: 1,
@@ -34,11 +40,38 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  title: {
-    fontSize: 28,
-    fontWeight: 'bold',
-    marginBottom: 30,
-    color: '#1E90FF', // Azul mediterráneo más oscuro
+  headerContainer: {
+    alignItems: 'center',
+    marginTop: 20,
+    marginBottom: 40,
+    position: 'relative',
+  },
+  titleMain: {
+    fontSize: 32,
+    fontWeight: '800',
+    color: '#1E90FF',
+    letterSpacing: 2,
+    textShadowColor: 'rgba(30, 144, 255, 0.2)',
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 4,
+  },
+  titleSub: {
+    fontSize: 40,
+    fontWeight: '900',
+    color: '#1E90FF',
+    letterSpacing: 3,
+    marginTop: -5,
+    textShadowColor: 'rgba(30, 144, 255, 0.2)',
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 4,
+  },
+  underline: {
+    width: 100,
+    height: 4,
+    backgroundColor: '#1E90FF',
+    borderRadius: 2,
+    marginTop: 8,
+    opacity: 0.7,
   },
   componentsContainer: {
     width: '100%',
