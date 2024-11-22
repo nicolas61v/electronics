@@ -13,8 +13,8 @@ Aplicación móvil para el monitoreo y control de temperatura en tiempo real, de
 ### 1. Clonar el Repositorio
 
 ```bash
-git clone https://github.com/tuusuario/control-temperatura.git
-cd control-temperatura
+git clone https://github.com/nicolas61v/electronics.git
+cd electronics
 ```
 
 ### 2. Instalar Dependencias
@@ -55,16 +55,6 @@ npx expo start
 - Asegúrate de tener una conexión estable a Internet
 - Para el mejor rendimiento, mantén Expo Go actualizado a la última versión
 - La aplicación funciona tanto en iOS como en Android
-
-## 🤝 Contribuir
-
-Si deseas contribuir al proyecto, por favor:
-
-1. Haz un Fork del repositorio
-2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
-3. Commit tus cambios (`git commit -m 'Add: alguna característica increíble'`)
-4. Push a la rama (`git push origin feature/AmazingFeature`)
-5. Abre un Pull Request
 
 ## 📫 Soporte
 
