@@ -60,6 +60,5 @@ npx expo start
 
 Si tienes problemas o preguntas, por favor abre un issue en el repositorio.
 
-## 📄 Licencia
+proyecto de caracter publico, tu decides que hacer con el. eso para la conexión con firebase procura crear el .env.local y asi puedes menter las credenciales de conexión a tu firebase
 
-Este proyecto está bajo la Licencia MIT - ver el archivo [LICENSE.md](LICENSE.md) para más detalles.
