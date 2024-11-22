@@ -7,6 +7,7 @@ Aplicación móvil para el monitoreo y control de temperatura en tiempo real, de
 - [Node.js](https://nodejs.org/en) (versión recomendada: 18 o superior)
 - [Expo Go](https://expo.dev/client) instalado en tu dispositivo móvil
 - Git instalado en tu sistema
+- El archivo jsonDatabase.json es la estrucutra que deberias de importar dentro de tu firebase, con Realtime Database, tambien activa la autenticación pero de manera anónima. 
 
 ## 🚀 Instalación y Configuración
 
