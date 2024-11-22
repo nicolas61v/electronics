@@ -1,6 +1,7 @@
 # Control de Temperatura App 🌡️
 
 Aplicación móvil para el monitoreo y control de temperatura en tiempo real, desarrollada con React Native y Expo.
+IMPORTANTE, la rama con el diseño mas actualizado es la rama master-desing
 
 ## 📋 Requisitos Previos
 
